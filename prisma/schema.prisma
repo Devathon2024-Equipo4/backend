@@ -32,6 +32,6 @@ model Address_history{
 
 model Reindeer {
   id         String    @id @default(uuid())
-  name       String
+  name       String    @unique
   alignment  Int
 }
