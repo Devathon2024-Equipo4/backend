@@ -29,3 +29,9 @@ model address_history{
   updated_at DateTime @default(now())
   address   address  @relation(fields: [address_id], references: [id])
 }
+
+model Reindeer {
+  id         Int    @id @default(autoincrement())
+  name       String
+  alignment  Int
+}
