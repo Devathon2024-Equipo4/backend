@@ -1,8 +1,8 @@
 import  Router  from 'express';
 import { ReindeerController } from '../controllers/reindeer';
-import { type ReindeerModelInterface } from '../models/reindeer';
+import { type ReindeerModelStatic } from '../models/reindeer';
 
-export const reindeerRoutes = (reindeerModel: ReindeerModelInterface) => {
+export const reindeerRoutes = (reindeerModel: ReindeerModelStatic) => {
     const controller = new ReindeerController(reindeerModel);
     const router = Router();
 

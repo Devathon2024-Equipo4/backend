@@ -1,6 +1,7 @@
 import express, { type Express } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import { registerRoutes } from "./routes";
 
 const app: Express = express();
 const API_VERSION = "/api/v1";
@@ -10,8 +11,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.disable("x-powered-by");
 
-app.get(`${API_VERSION}/`, (_req, res) => {
-  res.send("initial commit");
-});
+registerRoutes(app, API_VERSION);
 
 export default app;

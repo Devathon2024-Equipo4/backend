@@ -1,9 +1,9 @@
 import { type Request, type Response, type NextFunction } from 'express';
-import { type CreateReindeerType, type UpdateReindeerType, ReindeerModelInterface} from '../models/reindeer';
+import { type CreateReindeerType, type UpdateReindeerType, ReindeerModelStatic} from '../models/reindeer';
 
 export class ReindeerController {
-    private reindeerModel: ReindeerModelInterface
-    constructor(reindeerModel: ReindeerModelInterface) {
+    private reindeerModel: ReindeerModelStatic
+    constructor(reindeerModel: ReindeerModelStatic) {
         this.reindeerModel = reindeerModel
     }
 

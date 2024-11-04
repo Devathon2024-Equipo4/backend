@@ -4,7 +4,7 @@ export interface ReindeerDocument extends Reindeer {}
 export type CreateReindeerType = Pick<Reindeer, "name" | "alignment">
 export type UpdateReindeerType = Partial<Reindeer>
 
-export interface ReindeerModelInterface {
+export interface ReindeerModelStatic{
   getAll: () => Promise<ReindeerDocument[]>
   getByName: (name: string) => Promise<ReindeerDocument | null>
   create: (data: CreateReindeerType) => Promise<ReindeerDocument>
@@ -31,3 +31,4 @@ export default class ReindeerModel {
     })
   }
 }
+
