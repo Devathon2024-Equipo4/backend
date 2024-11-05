@@ -60,7 +60,7 @@ export class ReindeerController {
             const reindeerData = req.body;
 
             if (!id) {
-                return res.status(400).json({ error: 'Id parameter is required' });
+                return res.status(404).json({ error: 'Id parameter is required' });
             }
 
             if (!reindeerData) {
