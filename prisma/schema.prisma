@@ -35,3 +35,11 @@ model Reindeer {
   name       String    @unique
   alignment  Int
 }
+
+model Calories {
+  id             String    @id @default(uuid())
+  cookiesName    String    @unique
+  quantity       Int
+  calories       Float     @default(0.00)
+  timestamp      DateTime  @default(now())
+}
