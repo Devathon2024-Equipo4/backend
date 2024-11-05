@@ -67,10 +67,16 @@ export class CaloriesController {
             if (!calories) {
                 return res.status(400).json({ error: 'Calories data is required' });
             }
+
+            const existingOnce = await this.caloriesModel.getById(id);
+            if (!existingOnce) {
+                return res.status(404).json({ error: 'Calories entry not found' });
+            }
+
             const data: UpdateCaloriesType = {
-              cookiesName: calories.name,
-              quantity: calories.quantity,
-              calories: calories.calories, 
+                cookiesName: calories.name,
+                quantity: existingOnce.quantity + (calories.quantity || 0),
+                calories: existingOnce.calories, 
             }
 
 
@@ -96,5 +102,26 @@ export class CaloriesController {
           res.status(500).json({ error: 'Error deleting calories' });
           next(error)
       }
-  }
+    }
+
+    getTotalCalories = async (req: Request, res: Response, next: NextFunction) : Promise<any> => {
+        try{
+            const calories = await this.caloriesModel.getAll();
+            
+            if (!Array.isArray(calories)) {
+                return res.status(404).json({ error: 'Not found' });
+            }
+            const totalCalories = calories.reduce((total, item) => {
+                if (item.quantity && item.calories) {
+                    return total + (item.quantity * item.calories);
+                }
+                return total;
+            }, 0);
+            res.status(200).json({ total:totalCalories});
+        }
+        catch (error) {
+            res.status(500).json({ error: 'Error retrieving calories' });
+            next(error)
+        }
+    }
 }
