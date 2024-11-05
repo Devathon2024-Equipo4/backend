@@ -4,5 +4,5 @@ import ReindeerModel from "../models/reindeer";
 
 export const registerRoutes = (app: Express, apiVersion: string) => {
     
-    app.use(`${apiVersion}/reindeer`, reindeerRoutes(ReindeerModel));
+    app.use(`${apiVersion}/reindeers`, reindeerRoutes(ReindeerModel));
 }
