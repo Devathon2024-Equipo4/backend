@@ -7,9 +7,9 @@ export const reindeerRoutes = (reindeerModel: ReindeerModelStatic) => {
     const router = Router();
 
     router.get("/", controller.getAll);
-    router.get("/:name", controller.getAll);
+    router.get("/:name", controller.getByName);
     router.post("/", controller.create);
-    router.put("/:name", controller.update);
+    router.put("/:id", controller.update);
 
     return router;
 };
