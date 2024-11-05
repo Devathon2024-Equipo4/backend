@@ -13,19 +13,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model address {
+model Address {
   id        String   @id @default(uuid())
   url       String
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
-  history   address_history[]
+  history   Address_history[]
 }
 
-model address_history{
+model Address_history{
   id        String   @id @default(uuid())
   address_id String
   url       String
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
-  address   address  @relation(fields: [address_id], references: [id])
+  address   Address  @relation(fields: [address_id], references: [id])
+}
+
+model Reindeer {
+  id         String    @id @default(uuid())
+  name       String    @unique
+  alignment  Int
 }

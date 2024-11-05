@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: Devathon 8 API
+  description: |-
+    This API provides a comprehensive set of endpoints to manage 
+
+    
+  version: "1.0"
+
+servers:
+  - url: https://localhost:3000/api/v1
+    description: Backend server
+tags:
+  - name: reindeers
+    description: reindeer organizer
+  
+  
+paths:
+  
+  /api/v1/reindeers:
+    get:
+      tags:
+        - reindeers
+      summary: Get reindees
+      description: Retrieves all reindeers.
+      
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Reindeers"
+        "400":
+          description: Unauthorized
+        "404":
+          description: Reindeers not found
+        "500":
+          description: Internal server error
+    post:
+      tags:
+        - reindeers
+      summary: Create reindeer
+      description: Creates a new reindeer.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                user:
+                  $ref: "#/components/schemas/Reindeers"
+              
+     
+      responses:
+        "201":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  id:
+                    type: string
+        "400":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+  /api/v1/users/{name}:
+    get:
+        tags:
+          - reindeers
+        summary: Get reindeer by name
+        description: Retrieves the reindeer.
+        parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+        
+        responses:
+          200:
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Reindeers'
+          400:
+            description: Unauthorized
+          404:
+            description: Reindeer not found
+          500:
+            description: Internal server error
+  /api/v1/users/{id}:
+    put:
+      tags:
+        - reindeers
+      summary: Update reindeer
+      description: Updates the reindeer.
+     
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                user:
+                  $ref: "#/components/schemas/Reindeers"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  id:
+                    type: string
+        "400":
+          description: Unauthorized
+        "404":
+          description: Reindeer not found
+        "500":
+          description: Internal server error
+      
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+
+    Reindeers:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the user
+        name:
+          type: string
+          minLength: 3
+          maxLength: 30
+          description: Username for the user, between 3 and 30 characters
+        alignment:
+          type: integer
+        
+    
