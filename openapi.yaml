@@ -23,7 +23,6 @@ paths:
         - reindeers
       summary: Get reindees
       description: Retrieves all reindeers.
-      
       responses:
         "200":
           description: Successful response
@@ -73,7 +72,7 @@ paths:
           description: Unauthorized
         "500":
           description: Internal server error
-  /api/v1/users/{name}:
+  /api/v1/reindeers/{name}:
     get:
         tags:
           - reindeers
@@ -99,7 +98,7 @@ paths:
             description: Reindeer not found
           500:
             description: Internal server error
-  /api/v1/users/{id}:
+  /api/v1/reindeers/{id}:
     put:
       tags:
         - reindeers
@@ -141,29 +140,48 @@ paths:
           description: Reindeer not found
         "500":
           description: Internal server error
+  
+  /api/v1/weather:
+    get:
+      tags:
+        - weather
+      summary: Provides weather information and reindeer alignment depending on the weather
+      description: retrieve weather and all reindeers
+      responses:
+        "200":
+          description: Succesful response
+          content: 
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: "#/components/schemas/Weather"
       
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
   schemas:
-
     Reindeers:
       type: object
-      required:
-        - username
-        - password
       properties:
         id:
           type: string
-          description: Unique identifier for the user
+          description: Unique identifier for the reindeer
         name:
           type: string
           minLength: 3
           maxLength: 30
-          description: Username for the user, between 3 and 30 characters
+          description: name reindeer
         alignment:
           type: integer
+          description: reindeer position in santa's sleigh
+    Weather:
+      type: object
+      properties:
+        weather: 
+          type: object
+          description: Provides weather information
+        reindeers: 
+          type: object
+          description: provides information on the reindeer lineup
+        
         
     
