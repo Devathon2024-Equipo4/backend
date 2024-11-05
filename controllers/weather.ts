@@ -25,8 +25,9 @@ export class WeatherController {
             
             const weatherData = await response.json();
             const temperature = weatherData.current.temp_c;
+            const cloud = weatherData.current.cloud;
             const reindeers = await this.reindeerModel.getAll();
-            const final_alignment = getReindeerAlignment(temperature, reindeers);
+            const final_alignment = getReindeerAlignment(temperature, cloud ,reindeers);
 
             res.status(200).json({weather: weatherData, reindeers: final_alignment});
         } catch (error) {
