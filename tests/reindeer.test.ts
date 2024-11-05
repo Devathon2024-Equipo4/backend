@@ -1,8 +1,8 @@
 import request from "supertest";
 import app from "../app";
 
-describe("Rutas de reindeers", () => {
-  const baseUrl = "/api/v1/reindeers"; // Cambia esto según tu configuración
+describe("Reindeer routes", () => {
+  const baseUrl = "/api/v1/reindeers"; 
 
   describe("GET /", () => {
     it("should return all the reindeers", async () => {
@@ -15,7 +15,7 @@ describe("Rutas de reindeers", () => {
 
   describe("GET /:name", () => {
     it("should return a reindeer by name", async () => {
-      const name = "Rudolph"; // Cambia esto por un nombre existente en tu base de datos o mock
+      const name = "Rudolph"; 
       const res = await request(app).get(`${baseUrl}/${name}`);
       expect(res.statusCode).toEqual(200);
       expect(res.body).toHaveProperty("reindeer");
@@ -25,7 +25,7 @@ describe("Rutas de reindeers", () => {
     });
 
     it("should return a 404 if the reindeer does not exist", async () => {
-      const name = "NoExist"; // Nombre que no existe
+      const name = "NoExist"; 
       const res = await request(app).get(`${baseUrl}/${name}`);
       expect(res.statusCode).toEqual(404);
     });
@@ -33,7 +33,7 @@ describe("Rutas de reindeers", () => {
 
   describe("POST /", () => {
     it("should create a new reindeer", async () => {
-      const newReindeer = { name: "Tester2", alignment: 0 }; // Ajusta según tu modelo
+      const newReindeer = { name: "Tester2", alignment: 0 }; 
       const res = await request(app).post(baseUrl).send(newReindeer);
       expect(res.statusCode).toEqual(201);
       expect(res.body.reindeer).toHaveProperty("id");

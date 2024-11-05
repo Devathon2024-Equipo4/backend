@@ -6,5 +6,5 @@ import { weatherRoutes } from "./weather";
 export const registerRoutes = (app: Express, apiVersion: string) => {
     
     app.use(`${apiVersion}/reindeers`, reindeerRoutes(ReindeerModel));
-    app.use(`${apiVersion}/weather`, weatherRoutes());
+    app.use(`${apiVersion}/weather`, weatherRoutes(ReindeerModel));
 }
