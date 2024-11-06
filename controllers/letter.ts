@@ -6,17 +6,6 @@ export class LetterController {
     constructor(letterModel: LetterModelStatic) {
         this.letterModel = letterModel
     }
-
-    create = async ({query}: Request, res: Response, next: NextFunction) : Promise<void> => {
-      try {
-        await this.letterModel.create();
-          res.status(200).json({ message:'created'});
-      } catch (error) {
-        res.status(500).json({ error: 'Error retrieving letters' });
-        next(error)
-      }
-    }
-
     getAll = async ({query}: Request, res: Response, next: NextFunction) : Promise<void> => {
         try {
           const limit = parseInt(query.limit as string) || 10;

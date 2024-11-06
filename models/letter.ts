@@ -35,12 +35,4 @@ export default class LetterModel {
       }
     })
   }
-  static create = async () => {
-    return await prisma.letter.create({
-      data: {
-        content: "This is a test content",
-        status: false,
-      },
-    });
-  }
 }
