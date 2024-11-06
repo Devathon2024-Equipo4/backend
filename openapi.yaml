@@ -156,6 +156,28 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Weather"
+  
+  /api/v1/calories/total:
+    get:
+      tags:
+        - calories
+      summary: Get total calories 
+      description: returns all the calories consumed by Santa
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Calories"
+        "400":
+          description: Unauthorized
+        "404":
+          description: Calories not found
+        "500":
+          description: Internal server error
       
 components:
   schemas:
@@ -182,6 +204,12 @@ components:
         reindeers: 
           type: object
           description: provides information on the reindeer lineup
+    Calories:
+      type: object
+      properties:
+        total:
+          type: number
+          description: total calories
         
         
     
