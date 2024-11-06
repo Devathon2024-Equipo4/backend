@@ -170,7 +170,7 @@ export class CaloriesController {
 
       res.status(200).json({
         message: "All cookie quantities reset to 0",
-        cookies: updatedCookies // Devolver todas las galletas con la cantidad en 0
+        cookies: updatedCookies 
       });
     }catch (error) {
       res.status(500).json({ error: "Error resetting calories" })
