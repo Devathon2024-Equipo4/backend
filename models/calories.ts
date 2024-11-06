@@ -9,7 +9,7 @@ export interface CaloriesModelStatic{
   create: (data: CreateCaloriesType) => Promise<CaloriesDocument>
   update: (id: string, data: UpdateCaloriesType) => Promise<CaloriesDocument>
   delete: (id: string) => Promise<CaloriesDocument>
-
+  getById: (id: string) => Promise<CaloriesDocument | null>
 }
 
 const prisma = new PrismaClient()
@@ -32,5 +32,6 @@ export default class CaloriesModel {
     })
   }
   static delete = async (id: string) => await prisma.calories.delete({ where: { id } })
+  static getById = async (id: string) => await prisma.calories.findUnique({ where: { id } })
 }
 
