@@ -46,9 +46,15 @@ export class ElfController {
   create = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
       const elf = req.body;
-      if (!elf || !elf.name || !elf.status || !elf.age || !elf.gender) { // Valida todos los campos necesarios
+      if (!elf || !elf.name || !elf.status || !elf.age || !elf.gender) {
         return res.status(400).json({ error: 'Elf data (name, status, age, gender) is required' });
       }
+
+      // Validamos que el status sea válido
+      if (elf.status !== "HIRED" && elf.status !== "FIRED") {
+        return res.status(400).json({ error: 'Invalid status. Use "HIRED" or "FIRED"' });
+      }
+
       const data: CreateElfType = {
         name: elf.name,
         status: elf.status,
@@ -62,8 +68,7 @@ export class ElfController {
       res.status(500).json({ error: 'Error creating elf' });
       next(error);
     }
-  };
-
+};
 
   update = async (req: Request, res: Response, next: NextFunction) : Promise<any> => {
     try {
