@@ -138,15 +138,42 @@ export class CaloriesController {
       if (!Array.isArray(calories)) {
         return res.status(404).json({ error: "Not found" })
       }
-      const totalCalories = calories.reduce((total, item) => {
+      const {totalCalories, totalQuantity}  = calories.reduce((total, item) => {
         if (item.quantity && item.calories) {
-          return total + item.quantity * item.calories
+           total.totalCalories  += item.quantity * item.calories
+           total.totalQuantity  += item.quantity 
         }
         return total
-      }, 0)
-      res.status(200).json({ total: totalCalories })
+      }, { totalCalories: 0, totalQuantity: 0 })
+      res.status(200).json({ totalCalories: totalCalories, totalQuantity: totalQuantity })
     } catch (error) {
       res.status(500).json({ error: "Error retrieving calories" })
+      next(error)
+    }
+  }
+  reset = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> => {
+    try{
+      const calories = await this.caloriesModel.getAll();
+      if (!Array.isArray(calories)) {
+        return res.status(404).json({ error: "No cookies found" });
+      }
+      const updatedCookies = await Promise.all(
+        calories.map(async (item) => {
+          await this.caloriesModel.update(item.id, { quantity: 0 });
+          return { ...item, quantity: 0 }; 
+        })
+      );
+
+      res.status(200).json({
+        message: "All cookie quantities reset to 0",
+        cookies: updatedCookies 
+      });
+    }catch (error) {
+      res.status(500).json({ error: "Error resetting calories" })
       next(error)
     }
   }
