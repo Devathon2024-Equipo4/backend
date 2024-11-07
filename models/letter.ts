@@ -4,7 +4,6 @@ import { Pagination } from "../types/pagination"
 export interface LetterDocument extends Letter {}
 
 export interface LetterModelStatic {
-  create : ()=> Promise<any>
   getAll: (pagination?: Pagination) => Promise<LetterDocument[]>
   getById: (id: string) => Promise<LetterDocument | null>
   updateStatus: (id: string) => Promise<LetterDocument>
