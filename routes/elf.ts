@@ -8,6 +8,7 @@ export const elfRoutes = (elfModel: ElfModelStatic) => {
 
   router.get("/", controller.getAll);
   router.get("/status/:status", controller.getByStatus);
+  router.get("/:name", controller.getByName);
   router.post("/", controller.create);
   router.put("/:id", controller.update);
 

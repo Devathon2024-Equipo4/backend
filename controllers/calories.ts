@@ -1,9 +1,5 @@
 import { type Request, type Response, type NextFunction } from "express"
-import {
-  type CreateCaloriesType,
-  type UpdateCaloriesType,
-  CaloriesModelStatic
-} from "../models/calories"
+import { type CreateCaloriesType, type UpdateCaloriesType, CaloriesModelStatic } from "../models/calories"
 
 export class CaloriesController {
   private caloriesModel: CaloriesModelStatic
@@ -140,8 +136,8 @@ export class CaloriesController {
       }
       const {totalCalories, totalQuantity}  = calories.reduce((total, item) => {
         if (item.quantity && item.calories) {
-           total.totalCalories  += item.quantity * item.calories
-           total.totalQuantity  += item.quantity 
+          total.totalCalories  += item.quantity * item.calories
+          total.totalQuantity  += item.quantity 
         }
         return total
       }, { totalCalories: 0, totalQuantity: 0 })
