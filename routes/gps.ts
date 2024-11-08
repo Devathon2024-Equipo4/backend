@@ -5,8 +5,8 @@ import { type GpsModelStatic } from '../models/gps';
 export const gpsRoutes = (gpsModel: GpsModelStatic) => {
     const gpsController = new GpsController(gpsModel);
     const router = Router();
-    router.get('/', gpsController.getAll);
-    router.get('/recent', gpsController.recent);
+    router.get('/', gpsController.recent);
+    router.get('/:address', gpsController.getByAddress);
     router.post('/', gpsController.create);
     router.put('/:id', gpsController.update);
     router.delete('/:id', gpsController.delete);
