@@ -45,7 +45,18 @@ export class GpsController {
                 return res.status(400).json({ error: 'Address is required' });
             }
             const addressCreated = await this.gpsModel.create({ address });
-            res.status(201).json({ address: addressCreated});
+            const searchQuery = encodeURIComponent(address);
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${searchQuery}`);
+            if (!response.ok) {
+                return res.status(400).json({ error: 'Unable to geocode address' });
+            }
+            const data = await response.json();
+
+            if (data.length === 0) {
+                return res.status(404).json({ error: 'Address not found' });
+            }
+
+            res.status(201).json({ address: addressCreated, coordinates: data});
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: 'Error creating address' });
