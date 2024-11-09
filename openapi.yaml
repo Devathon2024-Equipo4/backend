@@ -13,6 +13,8 @@ servers:
 tags:
   - name: reindeers
     description: reindeer organizer
+  - name: gps
+    description: address gps
   
   
 paths:
@@ -156,7 +158,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Weather"
-  
+                  
   /api/v1/calories/total:
     get:
       tags:
@@ -178,7 +180,165 @@ paths:
           description: Calories not found
         "500":
           description: Internal server error
-      
+          
+  /api/v1/gps/:
+    get:
+      tags:
+        - gps
+      summary: returns and saves the addresses consulted with the GPS
+      description: Returns and saves the addresses consulted with the GPS by the front, returns a history of up to 5 saved addresses
+      responses:
+        "200":
+          description: Successful response
+          content:  
+            application/json:
+              schema:
+                type: object
+                properties:  
+                  address:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Address"
+        "400":
+          description: Unauthorized
+        "404":
+          description: Address not found
+        "500":
+          description: Internal server error
+
+    post:
+      tags:
+        - gps
+      summary: save address
+      description: save the normalized lowercase address in the database
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                  address:
+                    type: string
+                    description: the address string
+                    example: "Wall Street"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: The unique identifier for the address
+                        example: "dd70c341-7105-4bc4-9dbf-e083f0fcb18a"
+                      address:
+                        type: string
+                        description: The address string
+                        example: "Wall Street"
+                      created_at:
+                        type: string
+                        format: date-time
+                        description: The date and time when the address was created
+                        example: "2024-11-08T17:22:56.652Z"
+                      updated_at:
+                        type: string
+                        format: date-time
+                        description: The date and time when the address was last updated
+                        example: "2024-11-08T17:22:56.652Z"
+        "400":
+          description: Unauthorized
+        "404":
+          description: Address not found
+        "500":
+          description: Internal server error
+  /api/v1/gps/{id}:
+    put:
+      tags:
+        - gps
+      summary: Update an existing address
+      description: Updates the address with the specified ID and returns the updated address object.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier for the address
+          schema:
+            type: string
+            example: "dd70c341-7105-4bc4-9dbf-e083f0fcb18a"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                address:
+                  type: string
+                  description: The updated address string
+                  example: "Wall Street"
+      responses:
+        "200":
+          description: Address updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: The unique identifier for the address
+                        example: "dd70c341-7105-4bc4-9dbf-e083f0fcb18a"
+                      address:
+                        type: string
+                        description: The updated address string
+                        example: "Wall Street"
+                      created_at:
+                        type: string
+                        format: date-time
+                        description: The date and time when the address was created
+                        example: "2024-11-08T17:22:56.652Z"
+                      updated_at:
+                        type: string
+                        format: date-time
+                        description: The date and time when the address was last updated
+                        example: "2024-11-08T17:22:56.652Z"
+        "400":
+          description: Bad request
+        "404":
+          description: Address not found
+        "500":
+          description: Internal server error    
+    delete:
+      tags:
+        - gps
+      summary: Delete an existing address
+      description: Deletes the address with the specified ID and returns a confirmation message.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier for the address to be deleted
+          schema:
+            type: string
+            example: "dd70c341-7105-4bc4-9dbf-e083f0fcb18a"
+      responses:
+        "204":
+          description: Address deleted successfully
+        "400":
+          description: Bad request
+        "404":
+          description: Address not found
+        "500":
+          description: Internal server error  
 components:
   schemas:
     Reindeers:
@@ -210,6 +370,18 @@ components:
         total:
           type: number
           description: total calories
+    Address:
+      type: object
+      properties:
+        id:
+          type: string
+        address:
+          type: string
+        created_at:
+          type: string
+        
+          
+          
         
         
     

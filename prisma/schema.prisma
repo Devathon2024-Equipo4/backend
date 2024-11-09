@@ -15,19 +15,9 @@ datasource db {
 
 model Address {
   id          String   @id @default(uuid())
-  url         String
+  address         String
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
-  history     Address_history[]
-}
-
-model Address_history{
-  id         String   @id @default(uuid())
-  address_id String
-  url        String
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  address    Address  @relation(fields: [address_id], references: [id])
 }
 
 model Reindeer {

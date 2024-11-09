@@ -115,8 +115,8 @@ export class CaloriesController {
         return res.status(400).json({ error: "Id parameter is required" })
       }
 
-      const deleteCalories = await this.caloriesModel.delete(id)
-      res.status(200).json({ calories: deleteCalories })
+      await this.caloriesModel.delete(id)
+      res.status(204)
     } catch (error) {
       res.status(500).json({ error: "Error deleting calories" })
       next(error)

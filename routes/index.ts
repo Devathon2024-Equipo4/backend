@@ -8,6 +8,8 @@ import ElfModel from "../models/elf";
 import { weatherRoutes } from "./weather";
 import { letterRoutes } from "./letter";
 import LetterModel from "../models/letter";
+import { gpsRoutes } from "./gps";
+import GpsModel from "../models/gps";
 
 export const registerRoutes = (app: Express, apiVersion: string) => {
     
@@ -16,4 +18,5 @@ export const registerRoutes = (app: Express, apiVersion: string) => {
     app.use(`${apiVersion}/elves`, elfRoutes(ElfModel));
     app.use(`${apiVersion}/weather`, weatherRoutes(ReindeerModel));
     app.use(`${apiVersion}/letter`, letterRoutes(LetterModel));
+    app.use(`${apiVersion}/gps`, gpsRoutes(GpsModel));
 }
