@@ -116,7 +116,7 @@ export class CaloriesController {
       }
 
       await this.caloriesModel.delete(id)
-      res.status(204)
+      res.status(200).json(" Cookie delete ")
     } catch (error) {
       res.status(500).json({ error: "Error deleting calories" })
       next(error)
