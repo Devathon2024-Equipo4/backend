@@ -25,12 +25,19 @@ export default class LetterModel {
     })
   }
   static updateStatus = async (id: string) => {
+    const currentLetter = await prisma.letter.findUnique({
+      where: { id }
+    });
+  
+    if (!currentLetter) {
+      throw new Error(`Letter with ID ${id} not found`);
+    }
     return await prisma.letter.update({
       where: {
         id: id
       },
       data: {
-        status: true
+        status: !currentLetter.status
       }
     })
   }

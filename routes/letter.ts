@@ -8,7 +8,7 @@ export const letterRoutes = (letterModel: LetterModelStatic) => {
 
     router.get("/", controller.getAll);
     router.get("/:id", controller.getById);
-    router.delete('/readLetter/:id', controller.updateStatus)
+    router.patch('/readLetter/:id', controller.updateStatus)
 
     return router;
 };
