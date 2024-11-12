@@ -2,9 +2,8 @@ openapi: 3.0.3
 info:
   title: Devathon 8 API
   description: |-
-    This API provides a comprehensive set of endpoints to manage 
+    This API provides a comprehensive set of endpoints to manage
 
-    
   version: "1.0"
 
 servers:
@@ -15,10 +14,10 @@ tags:
     description: reindeer organizer
   - name: gps
     description: address gps
-  
-  
+  - name: Letters
+    description: Operations related to letters
+
 paths:
-  
   /api/v1/reindeers:
     get:
       tags:
@@ -56,8 +55,7 @@ paths:
                   format: binary
                 user:
                   $ref: "#/components/schemas/Reindeers"
-              
-     
+
       responses:
         "201":
           description: Successful response
@@ -76,37 +74,37 @@ paths:
           description: Internal server error
   /api/v1/reindeers/{name}:
     get:
-        tags:
-          - reindeers
-        summary: Get reindeer by name
-        description: Retrieves the reindeer.
-        parameters:
+      tags:
+        - reindeers
+      summary: Get reindeer by name
+      description: Retrieves the reindeer.
+      parameters:
         - in: path
           name: name
           required: true
           schema:
             type: string
-        
-        responses:
-          200:
-            description: Successful response
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/Reindeers'
-          400:
-            description: Unauthorized
-          404:
-            description: Reindeer not found
-          500:
-            description: Internal server error
+
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reindeers"
+        400:
+          description: Unauthorized
+        404:
+          description: Reindeer not found
+        500:
+          description: Internal server error
   /api/v1/reindeers/{id}:
     put:
       tags:
         - reindeers
       summary: Update reindeer
       description: Updates the reindeer.
-     
+
       parameters:
         - in: path
           name: id
@@ -142,7 +140,7 @@ paths:
           description: Reindeer not found
         "500":
           description: Internal server error
-  
+
   /api/v1/weather:
     get:
       tags:
@@ -152,18 +150,18 @@ paths:
       responses:
         "200":
           description: Succesful response
-          content: 
+          content:
             application/json:
-              schema: 
+              schema:
                 type: array
                 items:
                   $ref: "#/components/schemas/Weather"
-                  
+
   /api/v1/calories/total:
     get:
       tags:
         - calories
-      summary: Get total calories 
+      summary: Get total calories
       description: returns all the calories consumed by Santa
       responses:
         "200":
@@ -180,7 +178,7 @@ paths:
           description: Calories not found
         "500":
           description: Internal server error
-          
+
   /api/v1/gps/:
     get:
       tags:
@@ -190,11 +188,11 @@ paths:
       responses:
         "200":
           description: Successful response
-          content:  
+          content:
             application/json:
               schema:
                 type: object
-                properties:  
+                properties:
                   address:
                     type: array
                     items:
@@ -218,10 +216,10 @@ paths:
             schema:
               type: object
               properties:
-                  address:
-                    type: string
-                    description: the address string
-                    example: "Wall Street"
+                address:
+                  type: string
+                  description: the address string
+                  example: "Wall Street"
       responses:
         "200":
           description: Successful response
@@ -316,7 +314,7 @@ paths:
         "404":
           description: Address not found
         "500":
-          description: Internal server error    
+          description: Internal server error
     delete:
       tags:
         - gps
@@ -338,7 +336,118 @@ paths:
         "404":
           description: Address not found
         "500":
-          description: Internal server error  
+          description: Internal server error
+
+  # letter
+
+  /api/v1/letters:
+    get:
+      summary: Retrieve a list of letters
+      tags:
+        - Letters
+      parameters:
+        - name: limit
+          in: query
+          description: Number of letters to retrieve
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: offset
+          in: query
+          description: Offset for pagination
+          required: false
+          schema:
+            type: integer
+            default: 0
+      responses:
+        "200":
+          description: A list of letters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  letters:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        content:
+                          type: string
+                        status:
+                          type: boolean
+
+  /api/v1/letters/{id}:
+    get:
+      summary: Retrieve a letter by ID
+      tags:
+        - Letters
+      parameters:
+        - name: id
+          in: path
+          description: ID of the letter to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A letter object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  letter:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      content:
+                        type: string
+                      status:
+                        type: boolean
+        "404":
+          description: Letter not found
+        "400":
+          description: Invalid ID supplied
+
+  /api/v1/letters/readLetter/{id}:
+    patch:
+      summary: Update the status of a letter by ID
+      tags:
+        - Letters
+      parameters:
+        - name: id
+          in: path
+          description: ID of the letter to update
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The updated letter object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  letter:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      content:
+                        type: string
+                      status:
+                        type: boolean
+        "404":
+          description: Letter not found
+        "400":
+          description: Invalid ID supplied
+
 components:
   schemas:
     Reindeers:
@@ -358,10 +467,10 @@ components:
     Weather:
       type: object
       properties:
-        weather: 
+        weather:
           type: object
           description: Provides weather information
-        reindeers: 
+        reindeers:
           type: object
           description: provides information on the reindeer lineup
     Calories:
@@ -379,9 +488,21 @@ components:
           type: string
         created_at:
           type: string
-        
-          
-          
-        
-        
-    
+    Letter:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the letter
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        content:
+          type: string
+          minLength: 1
+          description: The content of the letter
+          example: "Dear Santa, I hope you bring me a toy car!"
+        status:
+          type: boolean
+          description: The status of the letter, indicating whether it has been read or not
+          example: false # false means unread, true means read
+      required:
+        - content
