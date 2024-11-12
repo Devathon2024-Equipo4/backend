@@ -10,6 +10,10 @@ import { letterRoutes } from "./letter";
 import LetterModel from "../models/letter";
 import { gpsRoutes } from "./gps";
 import GpsModel from "../models/gps";
+import { behaviorRoutes } from "./behavior";
+import ChildBehaviorModels from '../models/child-behavior'
+import { childrenRoutes } from "./children";
+import { childBehaviorRoutes } from "./child-behavior";
 
 export const registerRoutes = (app: Express, apiVersion: string) => {
     
@@ -18,5 +22,9 @@ export const registerRoutes = (app: Express, apiVersion: string) => {
     app.use(`${apiVersion}/elves`, elfRoutes(ElfModel));
     app.use(`${apiVersion}/weather`, weatherRoutes(ReindeerModel));
     app.use(`${apiVersion}/letter`, letterRoutes(LetterModel));
+    app.use(`${apiVersion}/behavior`, behaviorRoutes(ChildBehaviorModels.BehaviorModel));
+    app.use(`${apiVersion}/children`, childrenRoutes(ChildBehaviorModels.ChildrenModel));
+    app.use(`${apiVersion}/child-behavior`, childBehaviorRoutes(ChildBehaviorModels.ChildBehaviorModel));
     app.use(`${apiVersion}/gps`, gpsRoutes(GpsModel));
+
 }
