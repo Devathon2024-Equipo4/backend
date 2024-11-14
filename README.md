@@ -1,4 +1,4 @@
-# Project name
+# Santa Assistant Application
 
 The purpose of this application is to manage Santa's data for Christmas
 
@@ -13,7 +13,7 @@ This application offers various functionalities, such as:
 
 ## Index
 
-- [Project name](#project-name)
+- [Santa Assistant Application](#santa-assistant-application)
   - [Index](#index)
   - [Technologies](#technologies)
   - [Installation](#installation)
