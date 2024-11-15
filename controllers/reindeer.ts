@@ -82,17 +82,17 @@ export class ReindeerController {
 }
 
 export const getReindeerAlignment = (temperature: number ,cloud : number, reindeers: any[]) =>{
-    let final_alignment: { name: string; alignment: number }[] = [];
+    let final_alignment: { name: string; order: number }[] = [];
     //traditional alignment
     if (temperature < 0 || cloud > 75) {
-        final_alignment = reindeers.map((r, index) => ({ name: r.name, alignment: index }));
+        final_alignment = reindeers.map((r, index) => ({ name: r.name, order: index }));
     } else {
         const activeReindeers = ["Dasher", "Dancer"];
         const otherReindeers = reindeers.filter(r => !activeReindeers.includes(r.name));
         
         final_alignment = [
-            ...activeReindeers.map((name, index) => ({ name, alignment: index })),
-            ...otherReindeers.map((r, index) => ({ name: r.name, alignment: index + activeReindeers.length }))
+            ...activeReindeers.map((name, index) => ({ name, order: index })),
+            ...otherReindeers.map((r, index) => ({ name: r.name, order: index + activeReindeers.length }))
         ];
     }
 
