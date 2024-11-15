@@ -97,5 +97,5 @@ model AlignmentReindeer {
   order       Int
   alignment   Alignment            @relation(fields: [alignmentId], references: [id])
   reindeer    Reindeer             @relation(fields: [reindeerId], references: [id])
-  @@unique([alignmentId, order])
+  @@unique([alignmentId, reindeerId])
 }

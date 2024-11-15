@@ -1,0 +1,90 @@
+import { PrismaClient, AlignmentReindeer } from "@prisma/client"
+
+export interface AlignmentReindeerDocument extends AlignmentReindeer {}
+export type CreateAlignmentReindeerType = Pick<
+  AlignmentReindeerDocument,
+  "alignmentId" | "reindeerId" | "order"
+>
+export type UpdateAlignmentReindeerType = Partial<
+  Omit<AlignmentReindeerDocument, "id">
+>
+export interface AlignmentReindeerModelStatic {
+  getCompoundKey: (id: {
+    reindeerId: string
+    alignmentId: string
+  }) => { alignmentId_reindeerId: { alignmentId: string; reindeerId: string } }
+  create: (
+    data: CreateAlignmentReindeerType
+  ) => Promise<AlignmentReindeerDocument>
+  update: (
+    id: string,
+    data: UpdateAlignmentReindeerType
+  ) => Promise<AlignmentReindeerDocument>
+  delete: (id: string) => Promise<AlignmentReindeerDocument>
+  getAllWithReindeer: () => Promise<AlignmentReindeerDocument[]>
+}
+
+
+const prisma = new PrismaClient()
+
+export default class AlignmentReindeerModel {
+  static getCompoundKey(id: {
+    reindeerId: string;
+    alignmentId: string;
+  }): { alignmentId_reindeerId: { alignmentId: string; reindeerId: string } } {
+    return {
+      alignmentId_reindeerId: {
+        alignmentId: id.alignmentId,
+        reindeerId: id.reindeerId,
+      }
+    };
+  }
+
+  static create = async (data: CreateAlignmentReindeerType) =>
+    await prisma.alignmentReindeer.create({ data })
+
+  static update = async (
+    id: { alignmentId: string; reindeerId: string },
+    data: CreateAlignmentReindeerType
+  ) => {
+    const compoundKey = AlignmentReindeerModel.getCompoundKey(id)
+    const result = await prisma.alignmentReindeer.upsert({
+      where: compoundKey,
+      update: {
+        order: data.order
+      },
+      create: {
+        alignmentId: data.alignmentId,
+        reindeerId: data.reindeerId,
+        order: data.order
+      }
+    })
+    return result
+  }
+
+  static delete = async (id: { alignmentId: string; reindeerId: string }) => {
+    const compoundKey = AlignmentReindeerModel.getCompoundKey(id);
+    return await prisma.alignmentReindeer.delete({
+      where: {
+        alignmentId_reindeerId: {
+          alignmentId: id.alignmentId,
+          reindeerId: id.reindeerId,
+        },
+      },
+    });
+  };
+
+  static getAllWithReindeer = async () => {
+    return await prisma.alignment.findMany({
+      include: {
+        reindeer: {
+          include: {
+            reindeer: true, 
+          },
+        },
+      },
+    });
+  };
+
+
+}
