@@ -43,7 +43,7 @@ export class ReindeerController {
             }
             const data: CreateReindeerType = {
                 name: reindeer.name,
-                alignment: reindeer.alignment
+                description: reindeer.description
             }
 
             const createdReindeer = await this.reindeerModel.create(data);
@@ -68,7 +68,7 @@ export class ReindeerController {
             }
             const data: UpdateReindeerType = {
                 name: reindeerData.name,
-                alignment: reindeerData.alignment
+                description: reindeerData.description
             }
 
 

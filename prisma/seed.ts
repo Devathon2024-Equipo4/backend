@@ -102,6 +102,18 @@ const behaviorsData = [
   { name: "Trabajar en equipo" }
 ];
 
+const reindeerData = [
+    { name: "Rudolph", description: "current leader of the Christmas reindeer" },
+    { name: "Dasher", description: "the left leader before the arrival of Rudolph" },
+    { name: "Dancer", description: "the right leader before Rudolph's arrival." },
+    { name: "Prancer", description: "The most beautiful of the reindeer and possessing great endurance" },
+    { name: "Vixen", description: "considered the most beautiful, and of great resistance" },
+    { name: "Comet", description: "the reindeer in charge of spreading the happiness and wonder that Santa Claus brings." },
+    { name: "Cupid", description: "the reindeer in charge of spreading the love and joy that Santa Claus brings." },
+    { name: "Donner", description: "the reindeer that represents the spirit of thunder." },
+    { name: "Blitzen", description: "the reindeer that represents the spirit of lightning." },
+];
+
 const prisma = new PrismaClient();
 
 async function main() {
@@ -116,6 +128,10 @@ async function main() {
 
   await prisma.behavior.createMany({
     data: behaviorsData
+  });
+
+  await prisma.reindeer.createMany({
+    data: reindeerData
   });
 
   console.log('Datos de seed agregados exitosamente');

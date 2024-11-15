@@ -1,7 +1,7 @@
 import { PrismaClient, Reindeer } from "@prisma/client"
 
 export interface ReindeerDocument extends Reindeer {}
-export type CreateReindeerType = Pick<Reindeer, "name" | "alignment">
+export type CreateReindeerType = Pick<Reindeer, "name" | "description">
 export type UpdateReindeerType = Partial<Reindeer>
 export interface ReindeerModelStatic{
   getAll: () => Promise<ReindeerDocument[]>
