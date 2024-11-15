@@ -5,9 +5,7 @@ export type CreateAlignmentReindeerType = Pick<
   AlignmentReindeerDocument,
   "alignmentId" | "reindeerId" | "order"
 >
-export type UpdateAlignmentReindeerType = Partial<
-  Omit<AlignmentReindeerDocument, "id">
->
+
 export interface AlignmentReindeerModelStatic {
   getCompoundKey: (id: {
     reindeerId: string
@@ -18,7 +16,7 @@ export interface AlignmentReindeerModelStatic {
   ) => Promise<AlignmentReindeerDocument>
   update: (
     id: { alignmentId: string; reindeerId: string },
-    data: UpdateAlignmentReindeerType
+    data: CreateAlignmentReindeerType
   ) => Promise<AlignmentReindeerDocument>
   delete: (id: { alignmentId: string; reindeerId: string }) => Promise<AlignmentReindeerDocument>
   getAllWithReindeer: () => Promise<AlignmentReindeerDocument[]>
@@ -69,15 +67,18 @@ export default class AlignmentReindeerModel {
   };
 
   static getAllWithReindeer = async () => {
-    return await prisma.alignment.findMany({
+    const results = await prisma.alignmentReindeer.findMany({
       include: {
-        reindeer: {
-          include: {
-            reindeer: true, 
-          },
-        },
+        reindeer: true
       },
     });
+
+    return results.map(result => ({
+      alignmentId: result.alignmentId,
+      reindeerId: result.reindeerId,
+      order: result.order,
+      id: result.id,
+    }));
   };
 
 

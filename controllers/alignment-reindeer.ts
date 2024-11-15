@@ -1,6 +1,6 @@
 import {type Request, type Response, type NextFunction} from 'express';
-import { type CreateAlignmentReindeerType, type UpdateAlignmentReindeerType } from '../models/alignment-reindeer';
-import { AlignmentReindeerModelStatic } from '../models/alignment-reindeer';
+import { type AlignmentReindeerModelStatic, type CreateAlignmentReindeerType} from '../models/alignment-reindeer';
+
 
 interface  AlignmenteReindeerRequest extends Request {
     body: CreateAlignmentReindeerType;
@@ -56,7 +56,7 @@ export class AlignmentReindeerController {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const relations: UpdateAlignmentReindeerType[] = req.body["alignment-reindeer"];
+      const relations: CreateAlignmentReindeerType[] = req.body["alignment-reindeer"];
 
       if (!Array.isArray(relations) || relations.length === 0) {
          res.status(400).json({ error: "Invalid input: alignment-reindeer must be a non-empty array" });
@@ -70,11 +70,11 @@ export class AlignmentReindeerController {
         if (!alignmentId || !reindeerId) {
           throw new Error("Missing alignmentId or reindeerId in relation");
         }
-
-        return await this.alignmentReindeerModel.update(
-          { alignmentId, reindeerId },
-          { alignmentId, reindeerId, order } 
-        );
+        const id = { alignmentId, reindeerId };
+        const data: CreateAlignmentReindeerType = {
+          alignmentId, reindeerId, order
+        };
+        return await this.alignmentReindeerModel.update(id, data);
       });
 
       await Promise.all(updatePromises);
