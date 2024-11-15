@@ -17,10 +17,10 @@ export interface AlignmentReindeerModelStatic {
     data: CreateAlignmentReindeerType
   ) => Promise<AlignmentReindeerDocument>
   update: (
-    id: string,
+    id: { alignmentId: string; reindeerId: string },
     data: UpdateAlignmentReindeerType
   ) => Promise<AlignmentReindeerDocument>
-  delete: (id: string) => Promise<AlignmentReindeerDocument>
+  delete: (id: { alignmentId: string; reindeerId: string }) => Promise<AlignmentReindeerDocument>
   getAllWithReindeer: () => Promise<AlignmentReindeerDocument[]>
 }
 
@@ -28,10 +28,7 @@ export interface AlignmentReindeerModelStatic {
 const prisma = new PrismaClient()
 
 export default class AlignmentReindeerModel {
-  static getCompoundKey(id: {
-    reindeerId: string;
-    alignmentId: string;
-  }): { alignmentId_reindeerId: { alignmentId: string; reindeerId: string } } {
+  static getCompoundKey(id: { alignmentId: string; reindeerId: string }) {
     return {
       alignmentId_reindeerId: {
         alignmentId: id.alignmentId,
@@ -66,10 +63,7 @@ export default class AlignmentReindeerModel {
     const compoundKey = AlignmentReindeerModel.getCompoundKey(id);
     return await prisma.alignmentReindeer.delete({
       where: {
-        alignmentId_reindeerId: {
-          alignmentId: id.alignmentId,
-          reindeerId: id.reindeerId,
-        },
+        alignmentId_reindeerId: compoundKey.alignmentId_reindeerId,
       },
     });
   };
