@@ -13,7 +13,7 @@ export const alignmentReindeerRoutes = (
   router.get("/:alignmentId", alignmentReindeerController.getIdAlignmentReindeer)
   router.post("/", alignmentReindeerController.create)
   router.put("/", alignmentReindeerController.update)
-  router.delete("/:alignmentId/:reindeerId", alignmentReindeerController.delete)
+  router.delete("/:alignmentId", alignmentReindeerController.delete)
 
   return router
 }

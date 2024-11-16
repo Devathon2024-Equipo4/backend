@@ -18,7 +18,7 @@ export interface AlignmentReindeerModelStatic {
     id: { alignmentId: string; reindeerId: string },
     data: CreateAlignmentReindeerType
   ) => Promise<AlignmentReindeerDocument>
-  delete: (id: { alignmentId: string; reindeerId: string }) => Promise<AlignmentReindeerDocument>
+  delete: (alignmentId: string) => Promise<AlignmentReindeerDocument>
   getAllWithReindeer: () => Promise<AlignmentReindeerDocument[]>
   getIdAlignmentReindeer: (alignmentId: string) => Promise<AlignmentReindeerDocument[]>
 }
@@ -58,11 +58,10 @@ export default class AlignmentReindeerModel {
     return result
   }
 
-  static delete = async (id: { alignmentId: string; reindeerId: string }) => {
-    const compoundKey = AlignmentReindeerModel.getCompoundKey(id);
-    return await prisma.alignmentReindeer.delete({
+  static delete = async (alignmentId: string) => {
+    return await prisma.alignmentReindeer.deleteMany({
       where: {
-        alignmentId_reindeerId: compoundKey.alignmentId_reindeerId,
+        alignmentId: alignmentId,
       },
     });
   };

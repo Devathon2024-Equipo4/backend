@@ -92,13 +92,13 @@ export class AlignmentReindeerController {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const { alignmentId, reindeerId } = req.params;
-      if (!alignmentId || !reindeerId) {
-        res.status(400).json({ error: "Both alignmentId and reindeerId parameters are required" });
+      const { alignmentId } = req.params;
+      if (!alignmentId ) {
+        res.status(400).json({ error: "parameter alignmentId  are required" });
         return
       }
-      const id = { alignmentId, reindeerId };
-      const deletedRecord = await this.alignmentReindeerModel.delete(id);
+  
+      const deletedRecord = await this.alignmentReindeerModel.delete(alignmentId);
 
       if (!deletedRecord) {
         res.status(404).json({ error: "Relation not found" });
