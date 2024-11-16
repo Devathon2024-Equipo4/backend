@@ -1,5 +1,6 @@
 import {type Request, type Response, type NextFunction} from 'express';
 import { type AlignmentReindeerModelStatic, type CreateAlignmentReindeerType} from '../models/alignment-reindeer';
+import bodyParser from 'body-parser';
 
 
 interface  AlignmenteReindeerRequest extends Request {
@@ -14,8 +15,8 @@ export class AlignmentReindeerController {
 
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const relations: CreateAlignmentReindeerType[] = req.body;
-
+      const relations: CreateAlignmentReindeerType[] = req.body.data;
+      console.log(req.body);
       if (!Array.isArray(relations) || relations.length === 0) {
          res.status(400).json({ error: "Invalid input: body must be a non-empty array" });
          return
