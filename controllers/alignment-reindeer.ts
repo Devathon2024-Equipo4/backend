@@ -56,7 +56,7 @@ export class AlignmentReindeerController {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const relations: CreateAlignmentReindeerType[] = req.body["alignment-reindeer"];
+      const relations: CreateAlignmentReindeerType[] = req.body.data;
 
       if (!Array.isArray(relations) || relations.length === 0) {
          res.status(400).json({ error: "Invalid input: alignment-reindeer must be a non-empty array" });
