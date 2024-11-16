@@ -16,7 +16,6 @@ export class AlignmentReindeerController {
   create = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const relations: CreateAlignmentReindeerType[] = req.body.data;
-      console.log(req.body);
       if (!Array.isArray(relations) || relations.length === 0) {
          res.status(400).json({ error: "Invalid input: body must be a non-empty array" });
          return
@@ -119,6 +118,25 @@ export class AlignmentReindeerController {
   ): Promise<void> => {
     try {
       const relation = await this.alignmentReindeerModel.getAllWithReindeer();
+      res.status(200).json({ relation: relation });
+    } catch (error) {
+      res.status(500).json({ error: "Error retrieving relations" });
+      next(error);
+    }
+  };
+
+  getIdAlignmentReindeer = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const { alignmentId } = req.params;
+      if (!alignmentId) {
+        res.status(400).json({ error: "alignmentId parameter is required" });
+        return
+      }
+      const relation = await this.alignmentReindeerModel.getIdAlignmentReindeer(alignmentId);
       res.status(200).json({ relation: relation });
     } catch (error) {
       res.status(500).json({ error: "Error retrieving relations" });

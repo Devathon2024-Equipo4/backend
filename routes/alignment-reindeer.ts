@@ -10,6 +10,7 @@ export const alignmentReindeerRoutes = (
   const alignmentReindeerController = new AlignmentReindeerController(alignmentReindeerModel)
 
   router.get("/", alignmentReindeerController.getAllWithReindeer)
+  router.get("/:alignmentId", alignmentReindeerController.getIdAlignmentReindeer)
   router.post("/", alignmentReindeerController.create)
   router.put("/", alignmentReindeerController.update)
   router.delete("/:alignmentId/:reindeerId", alignmentReindeerController.delete)

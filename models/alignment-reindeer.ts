@@ -20,6 +20,7 @@ export interface AlignmentReindeerModelStatic {
   ) => Promise<AlignmentReindeerDocument>
   delete: (id: { alignmentId: string; reindeerId: string }) => Promise<AlignmentReindeerDocument>
   getAllWithReindeer: () => Promise<AlignmentReindeerDocument[]>
+  getIdAlignmentReindeer: (alignmentId: string) => Promise<AlignmentReindeerDocument[]>
 }
 
 
@@ -81,5 +82,16 @@ export default class AlignmentReindeerModel {
     }));
   };
 
+  static getIdAlignmentReindeer = async (alignmentId: string) => {
+    const results = await prisma.alignmentReindeer.findMany({ 
+      where: {
+        alignmentId: alignmentId
+      },
+      include: {
+        reindeer: true
+      }
+    });
+    return results
+  }
 
 }
