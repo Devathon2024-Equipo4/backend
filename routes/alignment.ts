@@ -12,7 +12,7 @@ export const alignmentRoutes = (
   router.get("/", alignmentController.getAll)
   router.get("/:id", alignmentController.getById)
   router.post("/", alignmentController.create)
-  router.put("/", alignmentController.update)
+  router.put("/:id", alignmentController.update)
   router.delete("/:id", alignmentController.delete)
 
   return router
