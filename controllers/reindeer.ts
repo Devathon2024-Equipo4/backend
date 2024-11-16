@@ -85,7 +85,7 @@ export const getReindeerAlignment = (temperature: number ,cloud : number, reinde
     let final_alignment: {id:string; name: string; order: number }[] = [];
     //traditional alignment
     if (temperature < 0 || cloud > 75) {
-        final_alignment = reindeers.map((r, index) => ({ id:r.id,name: r.name, order: index }));
+        final_alignment = reindeers.map((r, index) => ({ id:r.id,name: r.name, order: index, description:r.description }));
     } else {
         const activeReindeers = ["Dasher", "Dancer"];
         const otherReindeers = reindeers.filter(r => !activeReindeers.includes(r.name));
@@ -94,12 +94,14 @@ export const getReindeerAlignment = (temperature: number ,cloud : number, reinde
             ...activeReindeers.map((name, index) => ({
                 id: reindeers.find(r => r.name === name)?.id || '', 
                 name,
-                order: index
+                order: index,
+                description: reindeers.find(r => r.name === name)?.description || ''
             })),
             ...otherReindeers.map((r, index) => ({
                 id: r.id,
                 name: r.name,
-                order: index + activeReindeers.length
+                order: index + activeReindeers.length,
+                description: r.description
             }))
         ];
     }
