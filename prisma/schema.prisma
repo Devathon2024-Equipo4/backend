@@ -23,7 +23,8 @@ model Address {
 model Reindeer {
   id         String    @id @default(uuid())
   name       String    @unique
-  alignment  Int
+  description String
+  alignments  AlignmentReindeer[]
 }
 
 model Calories {
@@ -80,4 +81,21 @@ model ChildBehavior {
   behavior    Behavior         @relation(fields: [behaviorId], references: [id])
   behaviorId  String
   points Int
+}
+
+model Alignment {
+  id           String               @id @default(uuid())
+  name         String
+  createdAt    DateTime           @default(now())
+ reindeer      AlignmentReindeer[]
+}
+
+model AlignmentReindeer {
+  id          String               @id @default(uuid())
+  alignmentId String
+  reindeerId  String 
+  order       Int
+  alignment   Alignment            @relation(fields: [alignmentId], references: [id])
+  reindeer    Reindeer             @relation(fields: [reindeerId], references: [id])
+  @@unique([alignmentId, reindeerId])
 }

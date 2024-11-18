@@ -43,7 +43,7 @@ export class ReindeerController {
             }
             const data: CreateReindeerType = {
                 name: reindeer.name,
-                alignment: reindeer.alignment
+                description: reindeer.description
             }
 
             const createdReindeer = await this.reindeerModel.create(data);
@@ -68,7 +68,7 @@ export class ReindeerController {
             }
             const data: UpdateReindeerType = {
                 name: reindeerData.name,
-                alignment: reindeerData.alignment
+                description: reindeerData.description
             }
 
 
@@ -82,17 +82,27 @@ export class ReindeerController {
 }
 
 export const getReindeerAlignment = (temperature: number ,cloud : number, reindeers: any[]) =>{
-    let final_alignment: { name: string; alignment: number }[] = [];
+    let final_alignment: {id:string; name: string; order: number }[] = [];
     //traditional alignment
     if (temperature < 0 || cloud > 75) {
-        final_alignment = reindeers.map((r, index) => ({ name: r.name, alignment: index }));
+        final_alignment = reindeers.map((r, index) => ({ id:r.id,name: r.name, order: index, description:r.description }));
     } else {
         const activeReindeers = ["Dasher", "Dancer"];
         const otherReindeers = reindeers.filter(r => !activeReindeers.includes(r.name));
         
         final_alignment = [
-            ...activeReindeers.map((name, index) => ({ name, alignment: index })),
-            ...otherReindeers.map((r, index) => ({ name: r.name, alignment: index + activeReindeers.length }))
+            ...activeReindeers.map((name, index) => ({
+                id: reindeers.find(r => r.name === name)?.id || '', 
+                name,
+                order: index,
+                description: reindeers.find(r => r.name === name)?.description || ''
+            })),
+            ...otherReindeers.map((r, index) => ({
+                id: r.id,
+                name: r.name,
+                order: index + activeReindeers.length,
+                description: r.description
+            }))
         ];
     }
 

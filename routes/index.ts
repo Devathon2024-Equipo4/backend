@@ -14,6 +14,10 @@ import { behaviorRoutes } from "./behavior";
 import ChildBehaviorModels from '../models/child-behavior'
 import { childrenRoutes } from "./children";
 import { childBehaviorRoutes } from "./child-behavior";
+import { alignmentRoutes } from "./alignment";
+import { alignmentReindeerRoutes } from "./alignment-reindeer";
+import AlignmentModel from "../models/alignment";
+import AlignmentReindeerModel from "../models/alignment-reindeer";
 
 export const registerRoutes = (app: Express, apiVersion: string) => {
     
@@ -26,5 +30,7 @@ export const registerRoutes = (app: Express, apiVersion: string) => {
     app.use(`${apiVersion}/children`, childrenRoutes(ChildBehaviorModels.ChildrenModel));
     app.use(`${apiVersion}/child-behavior`, childBehaviorRoutes(ChildBehaviorModels.ChildBehaviorModel));
     app.use(`${apiVersion}/gps`, gpsRoutes(GpsModel));
+    app.use(`${apiVersion}/alignment`, alignmentRoutes(AlignmentModel));
+    app.use(`${apiVersion}/alignment-reindeer`, alignmentReindeerRoutes(AlignmentReindeerModel));
 
 }
