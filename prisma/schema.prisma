@@ -81,6 +81,7 @@ model ChildBehavior {
   behavior    Behavior         @relation(fields: [behaviorId], references: [id])
   behaviorId  String
   points Int
+  @@unique([childId , behaviorId])
 }
 
 model Alignment {

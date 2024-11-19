@@ -106,6 +106,17 @@ class ChildBehaviorModel {
       }
     })
   }
+  static updateChildBehavior = async (id: { childId: string; behaviorId: string }, data:CreateChildBehaviorType) => {
+    return await prisma.childBehavior.update({
+      where: {
+        childId: data.childId,
+        behaviorId: data.behaviorId
+      },
+      data: {
+        points: data.points
+      }
+    })
+  }
 }
 
 export default { BehaviorModel, ChildrenModel, ChildBehaviorModel }
