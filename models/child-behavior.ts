@@ -23,6 +23,7 @@ export interface ChildBehaviorModelStatic {
   createChildBehavior: (data: CreateChildBehaviorType) => Promise<ChildBehaviorDocument>
   getAll: () => Promise<ChildBehaviorDocument[]>
   updateChildBehavior: (id: { childId: string; behaviorId: string }, data: CreateChildBehaviorType) => Promise<ChildBehaviorDocument>
+  deleteChildBehavior: (id: { childId: string; behaviorId: string }) => Promise<ChildBehaviorDocument>
 }
 
 const prisma = new PrismaClient()
@@ -121,6 +122,16 @@ class ChildBehaviorModel {
       }
     });
   };
+  static deleteChildBehavior = async (id: { childId: string; behaviorId: string }) => {
+    return await prisma.childBehavior.delete({
+      where: {
+        childId_behaviorId: {
+          childId: id.childId,
+          behaviorId: id.behaviorId
+        }
+      }
+    });   
+  }
 }
 
 export default { BehaviorModel, ChildrenModel, ChildBehaviorModel }
