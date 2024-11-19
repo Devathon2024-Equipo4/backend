@@ -30,4 +30,20 @@ export class ChildBehaviorController {
       next(error)
     }
   }
+  update = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+    try {
+      const childBehavior = req.body as ChildBehaviorDocument
+      if (!childBehavior || !childBehavior.childId || !childBehavior.behaviorId || !childBehavior.points) {
+        return res
+          .status(400)
+          .json({ error: "data (childId, behaviorId, points) is required" })
+      }
+      const id = { childId: childBehavior.childId, behaviorId: childBehavior.behaviorId }
+      const updatedChildBehavior = await this.childBehaviorModel.updateChildBehavior(id, childBehavior)
+      res.status(200).json({ childBehavior: updatedChildBehavior })
+    } catch (error) {
+      res.status(500).json({ error: "Error updating childBehavior" })
+      next(error)
+    }
+  }
 }

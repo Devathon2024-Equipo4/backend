@@ -8,6 +8,7 @@ export const childBehaviorRoutes = (childBehaviorModel: ChildBehaviorModelStatic
 
     router.get("/", controller.getAll);
     router.post("/", controller.create);
+    router.put("/:childId/:behaviorId", controller.update);
 
     return router;
 };

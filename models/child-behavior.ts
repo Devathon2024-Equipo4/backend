@@ -22,6 +22,7 @@ export interface ChildrenModelStatic {
 export interface ChildBehaviorModelStatic {
   createChildBehavior: (data: CreateChildBehaviorType) => Promise<ChildBehaviorDocument>
   getAll: () => Promise<ChildBehaviorDocument[]>
+  updateChildBehavior: (id: { childId: string; behaviorId: string }, data: CreateChildBehaviorType) => Promise<ChildBehaviorDocument>
 }
 
 const prisma = new PrismaClient()
@@ -106,17 +107,20 @@ class ChildBehaviorModel {
       }
     })
   }
-  static updateChildBehavior = async (id: { childId: string; behaviorId: string }, data:CreateChildBehaviorType) => {
+
+  static updateChildBehavior = async (id: { childId: string; behaviorId: string }, data: CreateChildBehaviorType) => {
     return await prisma.childBehavior.update({
       where: {
-        childId: data.childId,
-        behaviorId: data.behaviorId
+        childId_behaviorId: {
+          childId: id.childId,
+          behaviorId: id.behaviorId
+        }
       },
       data: {
         points: data.points
       }
-    })
-  }
+    });
+  };
 }
 
 export default { BehaviorModel, ChildrenModel, ChildBehaviorModel }
