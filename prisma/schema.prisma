@@ -43,6 +43,7 @@ model Elf {
   email        String   @unique
   stature      Float
   status       Status
+  address      String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
