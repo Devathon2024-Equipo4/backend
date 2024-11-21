@@ -100,7 +100,8 @@ export class ElfController {
         age: elf.age,
         gender: elf.gender,
         email: elf.email,
-        stature: elf.stature
+        stature: elf.stature,
+        address: elf.address
       }
 
       const createdElf = await this.elfModel.create(data)
