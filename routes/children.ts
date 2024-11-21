@@ -9,7 +9,7 @@ export const childrenRoutes = (childrenModel: ChildrenModelStatic) => {
     router.get("/", controller.getAll);
     router.get("/:id", controller.getById);
     router.patch("/:id", controller.updateChild);
-    router.delete('/checkStatus/:id', controller.updateChildScore)
+    router.patch('/checkStatus/:id', controller.updateChildScore)
 
     return router;
 };
