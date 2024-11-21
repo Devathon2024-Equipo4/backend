@@ -48,7 +48,7 @@ export class ChildBehaviorController {
   }
   delete = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
-      const childBehavior = req.body as ChildBehaviorDocument
+      const childBehavior = req.body.deletedChildBehavior as ChildBehaviorDocument
       if (!childBehavior || !childBehavior.childId || !childBehavior.behaviorId) {
         return res
           .status(400)
