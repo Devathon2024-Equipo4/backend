@@ -1,7 +1,7 @@
 import { PrismaClient, Elf, Status } from "@prisma/client";
 
 export interface ElfDocument extends Elf {}
-export type CreateElfType = Pick<Elf, "name" | "age" | "gender"| "status" | "email" | "stature">;
+export type CreateElfType = Pick<Elf, "name" | "age" | "gender"| "status" | "email" | "stature" | "address">;
 export type UpdateElfType = Partial<Elf>;
 export interface ElfModelStatic {
   getAll: () => Promise<ElfDocument[]>;
