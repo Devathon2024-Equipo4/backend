@@ -39,7 +39,9 @@ model Elf {
   id           String   @id @default(uuid())
   name         String   @unique
   age          Int
-  gender       String
+  gender       Gender
+  email        String   @unique
+  stature      Float
   status       Status
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -49,6 +51,11 @@ enum Status {
   HIRED
   FIRED
 } 
+
+enum Gender {
+  MALE
+  FEMALE
+}
 
 model Letter {
   id      String @id @default(uuid())
