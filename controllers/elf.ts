@@ -1,7 +1,7 @@
 // Importamos el tipo `Status` del cliente de Prisma
 import { type Request, type Response, type NextFunction } from "express"
 import { type CreateElfType, type UpdateElfType, ElfModelStatic } from "../models/elf"
-import { Status } from "@prisma/client" // Esto importará el enum Status
+import { Status } from "@prisma/client" 
 
 export class ElfController {
   private elfModel: ElfModelStatic
@@ -59,7 +59,6 @@ export class ElfController {
         return res.status(400).json({ error: "Invalid status parameter" })
       }
 
-      // Convertimos el parámetro a tipo Status
       const status = statusParam as Status
 
       const elves = await this.elfModel.getByStatus(status)
@@ -89,7 +88,6 @@ export class ElfController {
           .json({ error: "Elf data (name, status, age, gender) is required" })
       }
 
-      // Validamos que el status sea válido
       if (elf.status !== "HIRED" && elf.status !== "FIRED") {
         return res
           .status(400)
@@ -100,7 +98,9 @@ export class ElfController {
         name: elf.name,
         status: elf.status,
         age: elf.age,
-        gender: elf.gender
+        gender: elf.gender,
+        email: elf.email,
+        stature: elf.stature
       }
 
       const createdElf = await this.elfModel.create(data)
