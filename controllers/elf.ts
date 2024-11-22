@@ -82,28 +82,22 @@ export class ElfController {
     ): Promise<any> => {
     try {
       const elf = req.body
-      if (!elf || !elf.name || !elf.status || !elf.age || !elf.gender) {
+      if (!elf || !elf.name ||  !elf.age || !elf.gender || !elf.email || !elf.stature || !elf.address) {
         return res
           .status(400)
-          .json({ error: "Elf data (name, status, age, gender) is required" })
-      }
-
-      if (elf.status !== "HIRED" && elf.status !== "FIRED") {
-        return res
-          .status(400)
-          .json({ error: 'Invalid status. Use "HIRED" or "FIRED"' })
+          .json({ error: "Elf data is required" })
       }
 
       const data: CreateElfType = {
         name: elf.name,
-        status: elf.status,
-        age: elf.age,
+        status: "HIRED",
+        age: parseInt(elf.age),
         gender: elf.gender,
         email: elf.email,
-        stature: elf.stature,
+        stature: parseFloat(elf.stature),
         address: elf.address
       }
-
+      
       const createdElf = await this.elfModel.create(data)
       res.status(201).json({ elf: createdElf })
     } catch (error) {
