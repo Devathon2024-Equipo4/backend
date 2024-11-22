@@ -7,6 +7,7 @@ const elfGender = Joi.string().required();
 const elfEmail = Joi.string().email().required();
 const elfStature = Joi.number().required();
 const elfAddress = Joi.string().required();
+const elfStatus = Joi.string().required();
 
 const elfSchema = Joi.object({
   id: elfId,
@@ -16,9 +17,10 @@ const elfSchema = Joi.object({
   email: elfEmail,
   stature: elfStature,
   address: elfAddress,
+  status: elfStatus,
 });
 
-const create = Joi.object({
+const createElfSchema = Joi.object({
   name: elfName,
   age: elfAge,
   gender: elfGender,
@@ -27,35 +29,29 @@ const create = Joi.object({
   address: elfAddress,
 });
 
-const update = Joi.object({
+
+const updateElfSchema = Joi.object({
   id: elfId,
-  name: elfName,
-  age: elfAge,
-  gender: elfGender,
-  email: elfEmail,
-  stature: elfStature,
-  address: elfAddress,
-});
-
-const elfCreateSchema = create.keys({
-  elf: create
-});
-
-const elfUpdateSchema = update.keys({
-  elf: update
-});
-
-const getElfSchema = elfId.keys({
-  elf: elfId.required()
+  name: elfName.optional(), 
+  age: elfAge.optional(),
+  gender: elfGender.optional(),
+  email: elfEmail.optional(),
+  stature: elfStature.optional(),
+  address: elfAddress.optional(),
+  status: elfStatus.optional(),
 });
 
 
+const getElfSchema = Joi.object({
+  id: elfId.required(),
+});
 
-const elveSchema = {
-  create: elfCreateSchema,
-  update: elfUpdateSchema,
-  get: getElfSchema
-}
 
-export default elveSchema;
+const elfSchemas = {
+  create: createElfSchema,
+  update: updateElfSchema,
+  get: getElfSchema,
+};
+
+export default elfSchemas;
 
