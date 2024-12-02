@@ -7,6 +7,7 @@ export interface ChildBehaviorDocument extends ChildBehavior {}
 
 export type CreateChildBehaviorType = Pick<ChildBehavior, "behaviorId" | "childId" | "points">;
 export type UpdateChildrenType = Partial<Children>;
+export type CreateChildrenType = Pick<Children, "name">;
 
 export interface BehaviorModelStatic {
   getAll: () => Promise<BehaviorDocument[]>
@@ -17,6 +18,8 @@ export interface ChildrenModelStatic {
   getById: (id: string) => Promise<ChildrenDocument | null | any>
   updateChild: (id: string, data:UpdateChildrenType) => Promise<ChildrenDocument | any>
   updateChildScore: (id: string) => Promise<ChildrenDocument>
+  create: (data: CreateChildrenType) => Promise<ChildrenDocument>;
+  delete: (id: string) => Promise<ChildrenDocument>;
 }
 
 export interface ChildBehaviorModelStatic {
@@ -58,6 +61,17 @@ class ChildrenModel {
       }
     })
   }
+  static create = async (data: CreateChildrenType) =>
+    await prisma.children.create({ data })
+
+  static delete = async (id: string) => {
+    return await prisma.children.delete({
+      where: {
+        id: id
+      }
+    });
+  };
+
   static updateChild = async (id: string, data:UpdateChildrenType) => {
     return await prisma.children.update({
       where: {
