@@ -1,4 +1,14 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Status, Gender } from '@prisma/client';
+
+interface Elf {
+  name: string;
+  age: number;
+  address: string;
+  stature: number;
+  email: string;
+  status: Status;
+  gender: Gender;
+}
 
 const letters = [
   {
@@ -114,6 +124,19 @@ const reindeerData = [
     { name: "Blitzen", description: "the reindeer that represents the spirit of lightning." },
 ];
 
+const elvesData: Elf[] = [
+  {  name: "Snowball Alabastro", age: 18, address: "Bosque Encantado #123", stature: 120, email: "snowball@santa.com", status: "HIRED", gender:"MALE" },
+  {  name: "Jingle McSprinkle", age: 22, address: "Colina Nevada #42", stature: 115, email: "jingle@santa.com", status: "HIRED", gender:"MALE" },
+  {  name: "Twinkle Frostypaws", age: 19, address: "Camino Estrella #5", stature: 118, email: "twinkle@santa.com", status: "HIRED",gender:"MALE"  },
+  {  name: "Sparkle Sugarplum", age: 21, address: "Villa Mágica #77", stature: 122, email: "sparkle@santa.com", status: "HIRED",gender:"MALE" },
+  {  name: "Peppermint Snowspark", age: 25, address: "Sendero de Hadas #99", stature: 116, email: "peppermint@santa.com", status: "HIRED",gender:"MALE" },
+  {  name: "Bells Tinkertoes", age: 20, address: "Bosque Festivo #14", stature: 119, email: "bells@santa.com", status: "HIRED" ,gender:"MALE" },
+  {  name: "Glimmer Twinkletop", age: 23, address: "Calle Copo de Nieve #8", stature: 117, email: "glimmer@santa.com", status: "FIRED" ,gender:"MALE" },
+  {  name: "Cinnamon Glitterfoot", age: 24, address: "Avenida Navidad #101", stature: 121, email: "cinnamon@santa.com", status: "HIRED", gender:"MALE" },
+  {  name: "Chestnut Jingleberry", age: 18, address: "Cabaña Inviernal #33", stature: 114, email: "chestnut@santa.com", status: "FIRED" ,gender:"FEMALE" },
+  {  name: "Frost Hollybloom", age: 22, address: "Camino de Luz #202", stature: 123, email: "frost@santa.com", status: "HIRED", gender:"MALE"  }
+];
+
 const prisma = new PrismaClient();
 
 async function main() {
@@ -132,6 +155,10 @@ async function main() {
 
   await prisma.reindeer.createMany({
     data: reindeerData
+  });
+
+  await prisma.elf.createMany({
+    data: elvesData
   });
 
   console.log('Datos de seed agregados exitosamente');
