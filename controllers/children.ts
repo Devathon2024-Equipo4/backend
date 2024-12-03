@@ -73,4 +73,37 @@ export class ChildrenController {
       next(error)
     }
   }
+
+  create = async (req: Request, res: Response, next: NextFunction) : Promise<any> => {
+    try {
+        const newChild = req.body;
+        if (!newChild) {
+            return res.status(400).json({ error: 'Child data is required' });
+        }
+        // const data: CreateChildrenType = {
+        //     name: newChild.name
+        // }
+
+        const createdChild = await this.childrenModel.create(newChild);
+        res.status(201).json({ child: createdChild });
+    } catch (error) {
+        res.status(500).json({ error: 'Error creating child' });
+        next(error)
+    }
+  }
+  delete = async (req: Request, res: Response, next: NextFunction) : Promise<any> => {
+    try {
+        const id = req.params.id;
+
+        if (!id) {
+            return res.status(400).json({ error: 'Id parameter is required' });
+        }
+
+        await this.childrenModel.delete(id);
+        res.status(200).json({ message: 'Child deleted' });
+    } catch (error) {
+        res.status(500).json({ error: 'Error deleting Child' });
+        next(error)
+    }
+  }
 }
