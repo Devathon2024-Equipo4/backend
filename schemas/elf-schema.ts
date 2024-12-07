@@ -31,13 +31,6 @@ const createElfSchema = Joi.object({
 
 
 const updateElfSchema = Joi.object({
-  id: elfId,
-  name: elfName.optional(), 
-  age: elfAge.optional(),
-  gender: elfGender.optional(),
-  email: elfEmail.optional(),
-  stature: elfStature.optional(),
-  address: elfAddress.optional(),
   status: elfStatus.optional(),
 });
 

@@ -12,7 +12,7 @@ export const elfRoutes = (elfModel: ElfModelStatic) => {
   router.get("/status/:status", controller.getByStatus);
   router.get("/:name", controller.getByName);
   router.post("/", validatorHandler(elfSchema.create, "body"), controller.create);
-  router.put("/:id",validatorHandler(elfSchema.get, "params"), controller.update);
+  router.put("/:id",validatorHandler(elfSchema.get, "params"), validatorHandler(elfSchema.update, "body"), controller.update);
 
   return router;
 };
