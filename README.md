@@ -107,7 +107,7 @@ To run the tests, use the following command:
 
 This project is licensed under the [MIT](LICENSE) license.
 
-## Agradecimientos
+## Acknowledgements
 
 We would like to thank all the team members for their dedication, effort, and collaboration during this devathon. Thanks to their teamwork and creativity, we have been able to move forward and tackle challenges with enthusiasm.
 We would also like to greatly thank Pedro for the opportunity to participate and learn under his guidance, which helped keep us on track and motivated at all times. We are happy with what we’ve accomplished together during this time!
