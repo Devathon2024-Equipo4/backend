@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Address {
+  id          String   @id @default(uuid())
+  address         String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+}
+
+model Reindeer {
+  id         String    @id @default(uuid())
+  name       String    @unique
+  description String
+  alignments  AlignmentReindeer[]
+}
+
+model Calories {
+  id             String    @id @default(uuid())
+  cookiesName    String    @unique
+  quantity       Int
+  calories       Float     @default(0.00)
+  timestamp      DateTime  @default(now())
+}
+
+model Elf {
+  id           String   @id @default(uuid())
+  name         String   @unique
+  age          Int
+  gender       Gender
+  email        String   @unique
+  stature      Float
+  status       Status
+  address      String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum Status {
+  HIRED
+  FIRED
+} 
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+model Letter {
+  id      String @id @default(uuid())
+  content String @db.Text
+  status  Boolean @default(false)
+}
+
+enum ChildStatus {
+  GOOD
+  BAD
+}
+
+model Children {
+  id          String           @id @default(uuid())
+  name        String
+  status      ChildStatus      @default(GOOD)
+  behaviors   ChildBehavior[]
+}
+
+model Behavior {
+  id          String           @id @default(uuid())
+  name        String
+  children    ChildBehavior[]
+}
+
+model ChildBehavior {
+  id          String           @id @default(uuid())
+  child       Children         @relation(fields: [childId], references: [id])
+  childId     String
+  behavior    Behavior         @relation(fields: [behaviorId], references: [id])
+  behaviorId  String
+  points Int
+  @@unique([childId , behaviorId])
+}
+
+model Alignment {
+  id           String               @id @default(uuid())
+  name         String
+  createdAt    DateTime           @default(now())
+ reindeer      AlignmentReindeer[]
+}
+
+model AlignmentReindeer {
+  id          String               @id @default(uuid())
+  alignmentId String
+  reindeerId  String 
+  order       Int
+  alignment   Alignment            @relation(fields: [alignmentId], references: [id])
+  reindeer    Reindeer             @relation(fields: [reindeerId], references: [id])
+  @@unique([alignmentId, reindeerId])
+}

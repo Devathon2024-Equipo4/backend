@@ -1,0 +1,839 @@
+openapi: 3.0.3
+info:
+  title: Devathon 8 API
+  description: |-
+    This API provides a comprehensive set of endpoints to manage
+
+  version: "1.0"
+
+servers:
+  - url: https://localhost:3000/api/v1
+    description: Backend server
+tags:
+  - name: reindeers
+    description: reindeer organizer
+  - name: gps
+    description: address gps
+  - name: letters
+    description: Operations related to letters
+  - name: behavior
+    description: behaviors endpoints
+  - name: children
+    description: children endpoints
+  - name: child-behavior
+    description: child behaviors endpoints
+  
+
+paths:
+  /api/v1/reindeers:
+    get:
+      tags:
+        - reindeers
+      summary: Get reindees
+      description: Retrieves all reindeers.
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Reindeers"
+        "400":
+          description: Unauthorized
+        "404":
+          description: Reindeers not found
+        "500":
+          description: Internal server error
+    post:
+      tags:
+        - reindeers
+      summary: Create reindeer
+      description: Creates a new reindeer.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                user:
+                  $ref: "#/components/schemas/Reindeers"
+
+      responses:
+        "201":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  id:
+                    type: string
+        "400":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+  /api/v1/reindeers/{name}:
+    get:
+      tags:
+        - reindeers
+      summary: Get reindeer by name
+      description: Retrieves the reindeer.
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Reindeers"
+        400:
+          description: Unauthorized
+        404:
+          description: Reindeer not found
+        500:
+          description: Internal server error
+  /api/v1/reindeers/{id}:
+    put:
+      tags:
+        - reindeers
+      summary: Update reindeer
+      description: Updates the reindeer.
+
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                user:
+                  $ref: "#/components/schemas/Reindeers"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  id:
+                    type: string
+        "400":
+          description: Unauthorized
+        "404":
+          description: Reindeer not found
+        "500":
+          description: Internal server error
+
+  /api/v1/weather:
+    get:
+      tags:
+        - weather
+      summary: Provides weather information and reindeer alignment depending on the weather
+      description: retrieve weather and all reindeers
+      responses:
+        "200":
+          description: Succesful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Weather"
+
+  /api/v1/calories/total:
+    get:
+      tags:
+        - calories
+      summary: Get total calories
+      description: returns all the calories consumed by Santa
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Calories"
+        "400":
+          description: Unauthorized
+        "404":
+          description: Calories not found
+        "500":
+          description: Internal server error
+
+  /api/v1/gps/:
+    get:
+      tags:
+        - gps
+      summary: returns and saves the addresses consulted with the GPS
+      description: Returns and saves the addresses consulted with the GPS by the front, returns a history of up to 5 saved addresses
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Address"
+        "400":
+          description: Unauthorized
+        "404":
+          description: Address not found
+        "500":
+          description: Internal server error
+
+    post:
+      tags:
+        - gps
+      summary: save address
+      description: save the normalized lowercase address in the database
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                address:
+                  type: string
+                  description: the address string
+                  example: "Wall Street"
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: The unique identifier for the address
+                        example: "dd70c341-7105-4bc4-9dbf-e083f0fcb18a"
+                      address:
+                        type: string
+                        description: The address string
+                        example: "Wall Street"
+                      created_at:
+                        type: string
+                        format: date-time
+                        description: The date and time when the address was created
+                        example: "2024-11-08T17:22:56.652Z"
+                      updated_at:
+                        type: string
+                        format: date-time
+                        description: The date and time when the address was last updated
+                        example: "2024-11-08T17:22:56.652Z"
+        "400":
+          description: Unauthorized
+        "404":
+          description: Address not found
+        "500":
+          description: Internal server error
+  /api/v1/gps/{id}:
+    put:
+      tags:
+        - gps
+      summary: Update an existing address
+      description: Updates the address with the specified ID and returns the updated address object.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier for the address
+          schema:
+            type: string
+            example: "dd70c341-7105-4bc4-9dbf-e083f0fcb18a"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                address:
+                  type: string
+                  description: The updated address string
+                  example: "Wall Street"
+      responses:
+        "200":
+          description: Address updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  address:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: The unique identifier for the address
+                        example: "dd70c341-7105-4bc4-9dbf-e083f0fcb18a"
+                      address:
+                        type: string
+                        description: The updated address string
+                        example: "Wall Street"
+                      created_at:
+                        type: string
+                        format: date-time
+                        description: The date and time when the address was created
+                        example: "2024-11-08T17:22:56.652Z"
+                      updated_at:
+                        type: string
+                        format: date-time
+                        description: The date and time when the address was last updated
+                        example: "2024-11-08T17:22:56.652Z"
+        "400":
+          description: Bad request
+        "404":
+          description: Address not found
+        "500":
+          description: Internal server error
+    delete:
+      tags:
+        - gps
+      summary: Delete an existing address
+      description: Deletes the address with the specified ID and returns a confirmation message.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier for the address to be deleted
+          schema:
+            type: string
+            example: "dd70c341-7105-4bc4-9dbf-e083f0fcb18a"
+      responses:
+        "204":
+          description: Address deleted successfully
+        "400":
+          description: Bad request
+        "404":
+          description: Address not found
+        "500":
+          description: Internal server error
+
+  /api/v1/letters:
+    get:
+      summary: Retrieve a list of letters
+      tags:
+        - letters
+      parameters:
+        - name: limit
+          in: query
+          description: Number of letters to retrieve
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: offset
+          in: query
+          description: Offset for pagination
+          required: false
+          schema:
+            type: integer
+            default: 0
+      responses:
+        "200":
+          description: A list of letters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  letters:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        content:
+                          type: string
+                        status:
+                          type: boolean
+  /api/v1/letters/{id}:
+    get:
+      summary: Retrieve a letter by ID
+      tags:
+        - letters
+      parameters:
+        - name: id
+          in: path
+          description: ID of the letter to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A letter object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  letter:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      content:
+                        type: string
+                      status:
+                        type: boolean
+        "404":
+          description: Letter not found
+        "400":
+          description: Invalid ID supplied
+  /api/v1/letters/readLetter/{id}:
+    patch:
+      summary: Update the status of a letter by ID
+      tags:
+        - letters
+      parameters:
+        - name: id
+          in: path
+          description: ID of the letter to update
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The updated letter object
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  letter:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      content:
+                        type: string
+                      status:
+                        type: boolean
+        "404":
+          description: Letter not found
+        "400":
+          description: Invalid ID supplied
+
+  /api/v1/behavior:
+    get:
+      tags:
+        - behavior
+      summary: Retrieve all behaviors
+      description: Retrieves a list of all behaviors.
+      responses:
+        "200":
+          description: A list of behaviors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Unique identifier for the behavior
+                    name:
+                      type: string
+                      description: The name of the behavior
+        "500":
+          description: Internal server error
+          
+  /api/v1/children:
+    get:
+      tags:
+        - children
+      summary: Retrieve all children
+      description: Retrieves a list of all children with their behaviors.
+      responses:
+        "200":
+          description: A list of children with their associated behaviors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Unique identifier for the child
+                    name:
+                      type: string
+                      description: The name of the child
+                    status:
+                      type: string
+                      description: The current status of the child
+                    behaviors:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            description: Unique identifier for the behavior
+                          name:
+                            type: string
+                            description: The name of the behavior
+                          points:
+                            type: integer
+                            description: Points assigned to the child for this behavior
+        "500":
+          description: Internal server error
+  /api/v1/children/{id}:
+    get:
+      tags:
+        - children
+      summary: Retrieve a child by ID
+      description: Retrieves the details of a specific child by their unique ID, including their behaviors.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the child.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A child object with their associated behaviors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Unique identifier for the child
+                  name:
+                    type: string
+                    description: The name of the child
+                  status:
+                    type: string
+                    description: The current status of the child
+                  behaviors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Unique identifier for the behavior
+                        name:
+                          type: string
+                          description: The name of the behavior
+                        points:
+                          type: integer
+                          description: Points assigned to the child for the behavior
+        "404":
+          description: Child not found
+        "500":
+          description: Internal server error
+    patch:
+      tags:
+        - children
+      summary: Update an existing child by ID
+      description: Updates the information of a child using their unique ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the child.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The updated name of the child
+                status:
+                  type: string
+                  description: The updated status of the child
+      responses:
+        "200":
+          description: Successfully updated child record
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Unique identifier for the child
+                  name:
+                    type: string
+                    description: The name of the child
+                  status:
+                    type: string
+                    description: The current status of the child
+        "400":
+          description: Bad request
+        "404":
+          description: Child not found
+        "500":
+          description: Internal server error
+  /api/v1/children/checkStatus/{id}:
+    delete:
+      tags:
+        - children
+      summary: Update a child status
+      description: |
+        This endpoint deletes a child from the system by its unique identifier   (`id`).
+        It also updates the status of the child, depending on the child's   associated behaviors.
+        If the child has behaviors with points, the status will be updated   accordingly.
+      parameters:
+        - in: path  # Cambié 'delete' por 'path'
+          name: id
+          required: true
+          description: The unique identifier of the child to be deleted.
+          schema:
+            type: string
+            example: "123e4567-e89b-12d3-a456-426614174000"
+      responses:
+        "200":
+          description: Child successfully deleted and status updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  child:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        description: The unique identifier of the deleted   child
+                      status:
+                        type: string
+                        description: The updated status of the child
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Child not found
+        "500":
+          description: Internal server error
+
+  /api/v1/child-behaviors:
+    get:
+      tags:
+        - child-behavior
+      summary: Get all child behaviors
+      description: |
+        Retrieves a list of all child behaviors and their associated points.
+      responses:
+        "200":
+          description: A list of child behaviors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: The unique identifier of the child behavior
+                    childId:
+                      type: string
+                      description: The unique identifier of the child
+                    behaviorId:
+                      type: string
+                      description: The unique identifier of the behavior
+                    points:
+                      type: integer
+                      description: The points associated with the child's   behavior
+        "500":
+          description: Internal server error
+    post:
+      tags:
+        - child-behavior
+      summary: Create a new child behavior
+      description: |
+        Creates a new child behavior for a specific child, assigning a   behavior and points.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                childId:
+                  type: string
+                  description: The unique identifier of the child
+                behaviorId:
+                  type: string
+                  description: The unique identifier of the behavior
+                points:
+                  type: integer
+                  description: The points for the behavior
+      responses:
+        "201":
+          description: Child behavior successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The unique identifier of the new child   behavior
+                  childId:
+                    type: string
+                    description: The unique identifier of the child
+                  behaviorId:
+                    type: string
+                    description: The unique identifier of the behavior
+                  points:
+                    type: integer
+                    description: The points assigned to the behavior
+        "400":
+          description: Invalid input data
+        "500":
+          description: Internal server error
+
+components:
+  schemas:
+    Reindeers:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the reindeer
+        name:
+          type: string
+          minLength: 3
+          maxLength: 30
+          description: name reindeer
+        alignment:
+          type: integer
+          description: reindeer position in santa's sleigh
+    Weather:
+      type: object
+      properties:
+        weather:
+          type: object
+          description: Provides weather information
+        reindeers:
+          type: object
+          description: provides information on the reindeer lineup
+    Calories:
+      type: object
+      properties:
+        total:
+          type: number
+          description: total calories
+    Address:
+      type: object
+      properties:
+        id:
+          type: string
+        address:
+          type: string
+        created_at:
+          type: string
+    Letter:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the letter
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        content:
+          type: string
+          minLength: 1
+          description: The content of the letter
+          example: "Dear Santa, I hope you bring me a toy car!"
+        status:
+          type: boolean
+          description: The status of the letter, indicating whether it has been read or not
+          example: false
+      required:
+        - content
+    children:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the child
+        name:
+          type: string
+          minLength: 3
+          maxLength: 100
+          description: The name of the child
+        status:
+          type: string
+          enum:
+            - GOOD
+            - BAD
+          description: The current status of the child based on their behavior
+      required:
+        - name
+    child-behavior:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the child behavior record
+        childId:
+          type: string
+          description: The unique identifier of the child who exhibited the behavior
+        behaviorId:
+          type: string
+          description: The unique identifier of the behavior
+        points:
+          type: integer
+          description: The points assigned to the child's behavior (typically between 0 and 100)
+    Behavior:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the behavior
+        name:
+          type: string
+          minLength: 3
+          maxLength: 100
+          description: The name of the behavior
+      required:
+        - name
+      
